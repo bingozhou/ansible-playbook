@@ -1,0 +1,2 @@
+- name: add nginx to chkconfig
+  shell: /sbin/chkconfig --add nginx

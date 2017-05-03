@@ -1,0 +1,12 @@
+- name: copy nginx_tar_gz to client
+  copy: src=nginx-1.12.0.tar.gz dest=/tmp/nginx-1.12.0.tar.gz
+- name: copy install_shell to client
+  copy: src=install_nginx.sh dest=/tmp/install_nginx.sh backup=yes
+- name: install nginx
+  shell: /bin/bash /tmp/install_nginx.sh
+- name: add nginx start script on boot
+  copy: src=nginx dest=/etc/init.d/nginx mode=0755 backup=yes
+  notify:
+    - add nginx to chkconfig
+- name: chkconfig nginx on level 345
+  service: enabled=true name=nginx state=started

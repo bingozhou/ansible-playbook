@@ -1,0 +1,18 @@
+#!/bin/bash 
+yum install -y gcc-c++  pcre* openssl* zlib zlib-devel
+groupadd -r nginx
+useradd -s /sbin/nologin -g nginx -r nginx
+cd /tmp
+tar xf nginx-1.12.0.tar.gz;cd nginx-1.12.0
+mkdir /var/run/nginx/;chown nginx.nginx /var/run/nginx/
+./configure \
+--prefix=/usr \
+--sbin-path=/usr/sbin/nginx \
+--conf-path=/etc/nginx/nginx.conf \
+--error-log-path=/var/log/nginx/error.log \
+--pid-path=/var/run/nginx/nginx.pid \
+--user=nginx \
+--group=nginx \
+--with-http_ssl_module
+make && make install
+/usr/sbin/nginx 

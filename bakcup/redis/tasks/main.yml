@@ -1,0 +1,18 @@
+- name: install gcc
+  yum: name=gcc state=installed
+- name: copy file to client
+  copy: src={{ item }} dest=/tmp/
+  with_items:
+     - redis-3.2.8.tar.gz
+     - install_redis.sh
+     - optimize_redis.sh
+- name: optimize redis
+  shell: /bin/bash /tmp/optimize_redis.sh
+- name: install redis
+  shell: /bin/bash /tmp/install_redis.sh
+- name: start redis
+  shell: /usr/local/bin/redis-server /data/redis/redis.conf
+- name: copy redis script to init.d
+  copy: src=redis dest=/etc/init.d/redis mode=0755 backup=yes
+- name: add redis on chkconfig 
+  shell: chkconfig --add redis;chkconfig --level 345 redis on
