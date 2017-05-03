@@ -1,0 +1,33 @@
+- name: remove the old mysql package
+  yum: name=mysql-libs state=absent
+
+- name: install mysql dependency package
+  yum: name={{ item }} state=present
+  with_items:
+        - libaio*
+        - perl-ExtUtils-Embed
+
+- name: copy mysql rpm package to nodes
+  copy: src={{ item }} dest=/tmp/
+  with_items:
+         - MySQL-server-5.6.15-1.el6.x86_64.rpm
+         - MySQL-devel-5.6.15-1.el6.x86_64.rpm
+         - MySQL-client-5.6.15-1.el6.x86_64.rpm
+
+- name: install mysql rpm package
+  yum: name=/tmp/{{ item }} state=present
+  with_items:
+        - MySQL-server-5.6.15-1.el6.x86_64.rpm
+        - MySQL-devel-5.6.15-1.el6.x86_64.rpm
+        - MySQL-client-5.6.15-1.el6.x86_64.rpm
+
+- name: copy the mysql my.cnf file 
+  copy: src=my.cnf dest=/etc/my.cnf
+- name: copy the hosts file
+  template: src=hosts.j2 dest=/etc/hosts backup=yes 
+
+- name: initialize mysql database
+  shell: /usr/bin/mysql_install_db
+
+- name: start mysql service 
+  service: name=mysql state=started
