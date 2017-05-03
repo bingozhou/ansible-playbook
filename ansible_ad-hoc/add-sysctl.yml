@@ -1,0 +1,19 @@
+---
+- hosts: shop_admin
+  gather_facts: no
+
+  tasks:
+
+  - name: add sysctl lines
+    lineinfile: dest=/etc/sysctl.conf line={{ item }}
+    with_items:
+          - 'net.ipv4.tcp_fin_timeout = 30 '
+          - 'net.ipv4.tcp_keepalive_time = 1200 '
+          - 'net.ipv4.tcp_syncookies = 1'
+          - 'net.ipv4.tcp_tw_reuse = 1 '
+          - 'net.ipv4.tcp_tw_recycle = 1 '
+          - 'net.ipv4.ip_local_port_range = 1024 65000'
+          - 'net.ipv4.tcp_max_syn_backlog = 8192'
+          - 'net.ipv4.tcp_max_tw_buckets = 5000'
+  - name: make the sysctl effect
+    shell: /sbin/sysctl -p
