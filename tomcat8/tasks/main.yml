@@ -1,0 +1,25 @@
+- name: mkdir java directory if not exists
+  stat: path={{ java_file_path }}
+  register: java_file_result
+
+- name: Create java path.
+  file: path={{ java_file_path }} state=directory
+  when: not java_file_result.stat.exists
+
+- name: install jdk from ali_baichuang
+  get_url: 
+         url={{ item }} 
+         dest=/tmp
+#         force=yes
+  with_items:
+        - http://file01.file.alimmdn.com/jdk/jdk-8u112-linux-x64.tar.gz
+  tags:
+    - get_jdk
+
+- name: tar zxvf jdk.tar.gz
+  unarchive: 
+        src=/tmp/jdk-8u112-linux-x64.tar.gz
+        dest=/usr/java/
+        copy=no
+ 
+#- name: wget the tomcat from ali_baichuang
