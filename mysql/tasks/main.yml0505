@@ -7,18 +7,22 @@
         - libaio*
         - perl-ExtUtils-Embed
 
-- name: copy shell script to nodes
+- name: copy mysql rpm package to nodes
   copy: src={{ item }} dest=/tmp/
   with_items:
+         - MySQL-server-5.6.15-1.el6.x86_64.rpm
+         - MySQL-devel-5.6.15-1.el6.x86_64.rpm
+         - MySQL-client-5.6.15-1.el6.x86_64.rpm
          - mysql_init_db.sh
          - mysql_security.sh
 
-- name: install mysql used rpm from alibaichuang
-  yum: name={{ item }} state=present
+- name: install mysql rpm package
+  yum: name=/tmp/{{ item }} state=present
   with_items:
-        - http://test.alimmdn.com/mysql5.6_x64/MySQL-server-5.6.15-1.el6.x86_64.rpm
-        - http://test.alimmdn.com/mysql5.6_x64/MySQL-devel-5.6.15-1.el6.x86_64.rpm
-        - http://test.alimmdn.com/mysql5.6_x64/MySQL-client-5.6.15-1.el6.x86_64.rpm
+        - MySQL-server-5.6.15-1.el6.x86_64.rpm
+        - MySQL-devel-5.6.15-1.el6.x86_64.rpm
+        - MySQL-client-5.6.15-1.el6.x86_64.rpm
+  
 
 - name: copy the mysql my.cnf file 
   copy: src=my.cnf dest=/etc/my.cnf
@@ -28,6 +32,15 @@
 
 - name: init the mysql db
   shell: sh /tmp/mysql_init_db.sh
+
+#- name: start mysql service
+#  service: name=mysql state=started
+
+#- name: create sock link
+#  file: src=/data/mydata/mysql.sock dest=/var/lib/mysql/mysql.sock state=link
+
+#- name: stopped mysql service
+#  service: name=mysql state=stopped
 
 - name: skip mysql password
   shell: nohup /usr/bin/mysqld_safe --skip-grant-tables >/dev/null 2>&1 &
