@@ -13,6 +13,8 @@
          - MySQL-server-5.6.15-1.el6.x86_64.rpm
          - MySQL-devel-5.6.15-1.el6.x86_64.rpm
          - MySQL-client-5.6.15-1.el6.x86_64.rpm
+         - mysql_init_db.sh
+         - mysql_security.sh
 
 - name: install mysql rpm package
   yum: name=/tmp/{{ item }} state=present
@@ -20,14 +22,31 @@
         - MySQL-server-5.6.15-1.el6.x86_64.rpm
         - MySQL-devel-5.6.15-1.el6.x86_64.rpm
         - MySQL-client-5.6.15-1.el6.x86_64.rpm
+  
 
 - name: copy the mysql my.cnf file 
   copy: src=my.cnf dest=/etc/my.cnf
+
 - name: copy the hosts file
   template: src=hosts.j2 dest=/etc/hosts backup=yes 
 
-- name: initialize mysql database
-  shell: /usr/bin/mysql_install_db
+- name: init the mysql db
+  shell: sh /tmp/mysql_init_db.sh
 
-- name: start mysql service 
-  service: name=mysql state=started
+#- name: start mysql service
+#  service: name=mysql state=started
+
+#- name: create sock link
+#  file: src=/data/mydata/mysql.sock dest=/var/lib/mysql/mysql.sock state=link
+
+#- name: stopped mysql service
+#  service: name=mysql state=stopped
+
+- name: skip mysql password
+  shell: nohup /usr/bin/mysqld_safe --skip-grant-tables >/dev/null 2>&1 &
+
+- name: mysql security setting 
+  shell: sh /tmp/mysql_security.sh
+
+- name: restart mysql service 
+  service: name=mysql state=restarted
