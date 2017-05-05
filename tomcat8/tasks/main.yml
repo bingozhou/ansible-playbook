@@ -12,7 +12,7 @@
          dest=/tmp
 #         force=yes
   with_items:
-        - http://file01.file.alimmdn.com/jdk/jdk-8u112-linux-x64.tar.gz
+        - http://test.alimmdn.com/jdk/jdk-8u112-linux-x64.tar.gz
   tags:
     - get_jdk
 
