@@ -1,0 +1,14 @@
+---
+- hosts: '{{ hosts }}'
+  user: root
+  tasks:
+    - name: get vars
+      #shell: echo "{{ group_names  }}"
+      #shell: echo "{{ play_hosts  }}"
+      #shell: echo "{{ inventory_hostname  }}"
+      #shell: echo "{{ inventory_dir  }}"
+      shell: echo "{{ inventory_file  }}"
+      register: res
+    - debug:
+         var=res.stdout_lines
+
