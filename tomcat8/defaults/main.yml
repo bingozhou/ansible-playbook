@@ -1,1 +1,7 @@
 java_file_path: "/usr/java"
+java_home: "/usr/java/jdk1.8.0_112"
+tomcat_http_url: "http://mirror.bit.edu.cn/apache/tomcat/tomcat-6/v6.0.53/bin/apache-tomcat-6.0.53.tar.gz"
+tomcat_name: "apache-tomcat-6.0.53"
+tomcat_home: "/data"
+tomcat_path: "{{ tomcat_home  }}/{{ tomcat_name }}.tar.gz"
+tomcat_webapps: "{{ tomcat_home  }}/{{ tomcat_name }}/webapps"

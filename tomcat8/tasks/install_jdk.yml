@@ -1,0 +1,34 @@
+- name: Create java path.
+  file: path={{ java_file_path }} state=directory
+
+- name: install jdk from ali_baichuang
+  get_url: 
+         url={{ item }} 
+         dest=/tmp
+  with_items:
+        - http://test.alimmdn.com/jdk/jdk-8u112-linux-x64.tar.gz
+  tags:
+    - get_jdk
+
+- name: tar xf jdk.tar.gz
+  unarchive: 
+        src=/tmp/jdk-8u112-linux-x64.tar.gz
+        dest=/usr/java/
+        copy=no
+
+- name: update the /etc/profile
+  lineinfile: dest=/etc/profile line={{ item }}
+  with_items:
+        - 'export JAVA_HOME={{ java_home }}'
+        - 'export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar'
+        - 'export PATH=$PATH:$JAVA_HOME/bin'
+  tags:
+    - update_profile
+
+- name: source the profile
+  shell: source /etc/profile
+  tags:
+    - source_profile
+
+
+#- name: wget the tomcat from ali_baichuang

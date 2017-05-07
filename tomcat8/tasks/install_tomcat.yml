@@ -1,0 +1,30 @@
+- name: create tomcat home directory
+  file:
+    path={{ tomcat_home  }}
+    state=directory
+
+- name: download tomcat 
+  get_url: 
+     url={{ tomcat_http_url }} 
+     dest={{ tomcat_home  }}
+  tags:
+   - download_tomcat
+   
+- name: unarchive tomcat
+  unarchive:
+      src={{ tomcat_path  }}
+      dest={{ tomcat_home  }}
+      copy=no
+
+- name: delete default tomcat webapps
+  file:
+     path={{ tomcat_webapps }}
+     state=absent
+
+- name: create tomcat webapps directory
+  file:
+    path={{ tomcat_webapps  }}
+    state=directory
+
+#- name: startup tomcat
+#  shell: source /etc/profile ; nohup {{ tomcat_home  }}/{{ tomcat_name }}/bin/startup.sh &
