@@ -1,0 +1,12 @@
+- name: install zabbix-agent
+  yum: name={{ zabbix_agent_rpm  }} state=present
+
+- name: copy the hosts file
+  template: src=hosts.j2 dest=/etc/hosts backup=yes 
+
+- name: copy the zabbix-agent config 
+  template: src=zabbix_agentd.conf.j2 dest=/etc/zabbix/zabbix_agentd.conf backup=yes
+  notify:
+     - start zabbix-agent service
+
+
