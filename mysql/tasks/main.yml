@@ -7,8 +7,8 @@
         - libaio*
         - perl-ExtUtils-Embed
 
-- name: install libselinux-pytho for ansible
-  yum: name=libselinux-pytho state=present
+- name: install libselinux-python for ansible
+  yum: name=libselinux-python state=present
 
 - name: copy shell script to nodes
   copy: src={{ item }} dest=/tmp/

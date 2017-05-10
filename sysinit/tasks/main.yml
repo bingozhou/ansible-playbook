@@ -9,6 +9,7 @@
     - ntpdate
     - unzip
     - vim
+    - libselinux-python
 
 - name: add ntpserver and update system time
   shell: /usr/sbin/ntpdate cn.pool.ntp.org
@@ -19,4 +20,10 @@
 - name: disabled selinux
   selinux: state=disabled
 
+- name: stop iptables
+  service: enabled=false name=iptables state=stopped
 
+- name: disabled ssh dns
+  lineinfile: dest=/etc/ssh/sshd_config regexp=^#UseDNS line='UseDNS no'
+  notify:
+     - restart sshd service
