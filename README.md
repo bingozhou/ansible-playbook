@@ -19,5 +19,5 @@ sysinit  系统初始化剧本
 nginx    安装官方nginx的剧本  
 redis    安装官方redis的剧本  
 mysql    安装官方mysql的剧本
-  zabbix-agent  安装zabbix agent 的剧本
-  zabbix-server 安装zabbix server 的剧本
+zabbix-agent  安装zabbix agent 的剧本
+zabbix-server 安装zabbix server 的剧本
