@@ -13,9 +13,11 @@ centos6.8 64bit
 
 2.backup  是备份不用的playbook脚本
 
-3.其余则是 一键安装脚本 
+3.其余则是 一键安装剧本
 
-sysinit  系统初始化脚本  
-nginx    安装官方nginx的脚本  
-redis    安装官方redis的脚本  
-mysql    安装官方mysql的脚本
+sysinit  系统初始化剧本  
+nginx    安装官方nginx的剧本  
+redis    安装官方redis的剧本  
+mysql    安装官方mysql的剧本
+zabbix-agent  安装zabbix agent 的剧本
+zabbix-server 安装zabbix server 的剧本
