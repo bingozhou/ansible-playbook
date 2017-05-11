@@ -6,13 +6,13 @@
          url={{ item }} 
          dest=/tmp
   with_items:
-        - http://test.alimmdn.com/jdk/jdk-8u112-linux-x64.tar.gz
+        - {{ jdk_http_url }}/{{ jdk_http_name  }}.tar.gz
   tags:
     - get_jdk
 
 - name: tar xf jdk.tar.gz
   unarchive: 
-        src=/tmp/jdk-8u112-linux-x64.tar.gz
+        src=/tmp/{{ jdk_http_name  }}.tar.gz
         dest=/usr/java/
         copy=no
 
@@ -31,4 +31,3 @@
     - source_profile
 
 
-#- name: wget the tomcat from ali_baichuang
