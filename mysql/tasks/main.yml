@@ -19,9 +19,9 @@
 - name: install mysql used rpm from alibaichuang
   yum: name={{ item }} state=present
   with_items:
-         - {{ mysql_server_url  }}
-         - {{ mysql_devel_url  }}
-         - {{ mysql_client_url }} 
+         - '{{ mysql_server_url }}'
+         - '{{ mysql_devel_url }}'
+         - '{{ mysql_client_url }}'
 
 - name: copy the mysql my.cnf file 
   template: src=my.cnf.j2 dest=/etc/my.cnf
@@ -37,6 +37,9 @@
 
 - name: mysql security setting 
   shell: sh /tmp/mysql_security.sh
+
+- name: link mysql.sock
+  file: src={{ mysql_datadir  }}/mysql.sock path=/var/lib/mysql/mysql.sock state=link
 
 - name: restart mysql service 
   service: name=mysql state=restarted

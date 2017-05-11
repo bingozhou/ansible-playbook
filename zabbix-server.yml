@@ -3,4 +3,5 @@
   remote_user: root
 
   roles:
+    - mysql
     - zabbix-server

@@ -27,11 +27,17 @@
   shell: cd /tmp/{{ zabbix_server_name  }} && yum localinstall *.rpm -y
   when: zabbix_server_status.stat.exists == False
 
+- name: import db in mysql
+  mysql_db:
+       name={{ zabbix_db }}
+       state=import
+       target={{ zabbix_server_sql }}
+
 - name: copy zabbix-server config
   template: src=zabbix_server.conf.j2 dest=/etc/zabbix/zabbix_server.conf backup=yes
 
-- name: start zabbix-server service
-  service: name=zabbix-server state=started
+#- name: start zabbix-server service
+#  service: name=zabbix-server state=started
 
 - name: copy zabbix-server config for httpd
   copy: 
@@ -43,4 +49,6 @@
   service: name=httpd state=restarted
 
 
+- name: start zabbix-server service
+  service: name=zabbix-server state=started
 
