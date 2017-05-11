@@ -1,0 +1,27 @@
+---
+
+- name: install mysql python package
+  yum: name=MySQL-python state=present
+
+- name: copy .my.cnf.j2
+  template: src=.my.cnf.j2 dest=/root/.my.cnf
+
+
+- name: add db in mysql
+  mysql_db:
+       name={{ zabbix_db }}
+       state=present
+
+- name: add user in mysql
+  mysql_user: 
+       name={{ zabbix_user }}
+       password={{ zabbix_passwd }}
+       priv='{{ zabbix_db }}.*:ALL,GRANT'
+       state=present
+
+- name: import db in mysql
+  mysql_db:
+       name={{ zabbix_db }}
+       state=import
+       target={{ zabbix_server_sql }}
+

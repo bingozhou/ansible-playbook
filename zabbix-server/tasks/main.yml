@@ -1,0 +1,13 @@
+---
+- include: epel.yml
+
+- include: httpd.yml
+
+- include: tools.yml
+
+- include: php56.yml
+
+- include: zabbix-server.yml
+
+- include: mysql.yml
+

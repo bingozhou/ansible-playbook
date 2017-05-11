@@ -1,0 +1,5 @@
+- name: install some tools
+  yum: name={{ item }} state=installed
+  with_items:
+      - lrzsz
+      - unzip

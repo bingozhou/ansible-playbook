@@ -1,0 +1,30 @@
+---
+
+- name: check file in local or not
+  stat: path=/tmp/{{ php56_name }}.zip
+  register: php56_rpm
+
+- name: download php56 rpm
+  get_url: url={{ php56_rpm_url  }}/{{ php56_name }}.zip  dest=/tmp
+  when: php56_rpm.stat.exists == False
+  tags:
+    - download php56 rpm
+
+- name: unarchive php56
+  unarchive: src=/tmp/{{ php56_name  }}.zip dest=/tmp/ copy=no
+
+- name: check php56 is installed or not
+  shell: /usr/bin/php -v
+  register: php_status
+  ignore_errors: True
+
+- name: install php56 rpm
+  shell: cd /tmp/{{ php56_name  }} && yum localinstall *.rpm -y
+  when: php_status | failed
+
+- name: download php56 config
+  get_url: url={{ php56_config_url  }}/{{ php56_config }}  dest=/tmp
+
+- name: copy php56 config
+  copy: remote_src=True src=/tmp/{{ php56_config }} dest=/etc/php.ini backup=yes
+

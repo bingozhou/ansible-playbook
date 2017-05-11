@@ -1,0 +1,46 @@
+---
+
+- name: check {{ zabbix_repo_name }}  in local or not
+  stat: path=/etc/yum.repos.d/{{ zabbix_repo_name }}
+  register: zabbix_repo
+
+- name: install zabbix repo
+  get_url: url={{ zabbix_repo_url  }}/{{ zabbix_repo_name }} dest=/etc/yum.repos.d
+  when: zabbix_repo.stat.exists == False
+
+- name: check {{ zabbix_server_name }}.zip in local or not
+  stat: path=/tmp/{{ zabbix_server_name }}.zip
+  register: zabbix_server_zip
+
+- name: download zabbix-server rpm
+  get_url: url={{ zabbix_server_url  }}/{{ zabbix_server_name  }}.zip dest=/tmp
+  when: zabbix_server_zip.stat.exists == False
+
+- name: unarchive zabbix-server zip
+  unarchive: src=/tmp/{{ zabbix_server_name  }}.zip dest=/tmp/ copy=no
+
+- name: check zabbix_server_status
+  stat: path=/etc/init.d/zabbix-server
+  register: zabbix_server_status
+
+- name: install zabbix-server rpm
+  shell: cd /tmp/{{ zabbix_server_name  }} && yum localinstall *.rpm -y
+  when: zabbix_server_status.stat.exists == False
+
+- name: copy zabbix-server config
+  template: src=zabbix_server.conf.j2 dest=/etc/zabbix/zabbix_server.conf backup=yes
+
+- name: start zabbix-server service
+  service: name=zabbix-server state=started
+
+- name: copy zabbix-server config for httpd
+  copy: 
+        remote_src=True
+        src=/usr/share/doc/zabbix-web-3.2.6/httpd22-example.conf
+        dest=/etc/httpd/conf.d/zabbix.conf
+
+- name: restart httpd service
+  service: name=httpd state=restarted
+
+
+
