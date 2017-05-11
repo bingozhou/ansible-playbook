@@ -6,7 +6,7 @@
 #show databases;
 
 
-newpasswd=123456
+newpasswd=pw_root
 
 
 

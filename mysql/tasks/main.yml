@@ -19,12 +19,12 @@
 - name: install mysql used rpm from alibaichuang
   yum: name={{ item }} state=present
   with_items:
-        - http://software1.file.alimmdn.com/mysql5.6_x64/MySQL-server-5.6.15-1.el6.x86_64.rpm
-        - http://software1.file.alimmdn.com/mysql5.6_x64/MySQL-devel-5.6.15-1.el6.x86_64.rpm
-        - http://software1.file.alimmdn.com/mysql5.6_x64/MySQL-client-5.6.15-1.el6.x86_64.rpm
+         - {{ mysql_server_url  }}
+         - {{ mysql_devel_url  }}
+         - {{ mysql_client_url }} 
 
 - name: copy the mysql my.cnf file 
-  copy: src=my.cnf dest=/etc/my.cnf
+  template: src=my.cnf.j2 dest=/etc/my.cnf
 
 - name: copy the hosts file
   template: src=hosts.j2 dest=/etc/hosts backup=yes 

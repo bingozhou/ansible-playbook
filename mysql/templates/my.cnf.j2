@@ -1,0 +1,23 @@
+[client]
+password = {{ mysql_password  }}
+port = {{ mysql_port }}
+default-character-set=utf8
+socket  = {{ mysql_datadir }}/mysql.sock
+
+[mysqld]
+datadir = {{ mysql_datadir }}
+port = {{ mysql_port }}
+socket  = {{ mysql_datadir }}/mysql.sock
+pid-file = {{ mysql_datadir }}/mysql.pid 
+character_set_server=utf8
+character_set_client=utf8
+collation-server=utf8_general_ci
+#linux下mysql安装完后是默认：表名区分大小写，列名不区分大小写； 0：区分大小写，1：不区分大小写
+lower_case_table_names=1
+#设置最大连接数，默认为 151，MySQL服务器允许的最大连接数16384
+max_connections={{ mysql_max_connections }}
+#默认设置严格模式
+sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
+
+[mysql]
+default-character-set = utf8
