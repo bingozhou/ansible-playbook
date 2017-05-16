@@ -6,7 +6,7 @@
          url={{ item }} 
          dest=/tmp
   with_items:
-        - {{ jdk_http_url }}/{{ jdk_http_name  }}.tar.gz
+        - '{{jdk_http_url }}/{{ jdk_http_name  }}.tar.gz'
   tags:
     - get_jdk
 
